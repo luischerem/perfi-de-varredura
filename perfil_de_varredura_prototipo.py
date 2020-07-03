@@ -1,8 +1,9 @@
 #--------------------------------------
 #perfil_de_varredura.py
-#direção do projeto:     luischerem        luis.cherem@gmail.com
-#programação e direção:  gabrielalmeida    gabriel.almeida@uft.edu.br
-#arcmap arqgis
+#contribuição e direção:           luischerem       luis.cherem@gmail.com
+#contribuição e programação:       gabrielalmeida   gabriel.almeida@uft.edu.br
+#contribuição e intermediação:     danielsantos     daniel.A.Sants@hotmail.com
+#argis - arcmap
 #--------------------------------------
 
 import arcpy
