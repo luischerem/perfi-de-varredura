@@ -24,6 +24,7 @@ DATA_Y = [] #array matriz Y
 
 #... Outras variáveis
 
+
 A TOOLBOX
 A toolbox é excencial para acoplagem do script python ao ArcMap (ArcGis), uma vez que essa fará interface com o script.
 
