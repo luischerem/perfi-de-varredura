@@ -26,7 +26,7 @@ else:
 #extrair a mascara
 out_extract_mask = ExtractByMask(in_raster, in_mask_data)
 #realizar o calculo a partir da mascara
-RM_mde_minus = out_extract_mask * -1
+RE_mde_minus = out_extract_mask * -1
 #hydrology -> flow direction
 FD_mde_minus = arcpy.sa.FlowDirection(RE_mde_minus)
 #hydrology -> sink
