@@ -1,6 +1,8 @@
 PERFIL DE VARREADURA
 Script de automação ArcMap
-Autores: luischerem | gabrielalmeida
+luis cherem
+gabriel almeida
+daniel santos
 
 A funcionalidade deste script é realizar uma integração com ArcMap(ArgGis) para análises de perfis topográficos a partir de dados georreferenciados.
 O pacote do arcpy integra diversas funcionalidades utilizadas para finalidades diversas.
@@ -8,25 +10,13 @@ O pacote do arcpy integra diversas funcionalidades utilizadas para finalidades d
 #importação do módulo arcpy
 import arcpy
 
-Além do módulo arcpy o script comtepla o uso de bibliotécas python como matplotlib (para plotagem de gráficos de perfil), numpy (para geomática dos dados),
-pandas (para integração com ciência de dados e ArcMap) dentre outros módulos nativos
-
-#importação dos módulos para ciência de dados
-import matplotlib
-import numpy as np
-import pandas as pd
 
 VARIÁVEIS
 #variáveis (a critério de modificação)
-PATH_RASTER = "c:\\path\to\file\\file" #(caminho do raster)
-DATA_X = [] #array matriz X
-DATA_Y = [] #array matriz Y
-
+in_raster     = "" #raster principal
+in_mask_data  = "" #poligono
+meu_ambiente  = "C:\\users\\user\\path\\to\\database.gdb"
 #... Outras variáveis
-
-
-A TOOLBOX
-A toolbox é excencial para acoplagem do script python ao ArcMap (ArcGis), uma vez que essa fará interface com o script.
 
 #Variáveis para a toolbox inputs outputs
 #Buscar parametros de entrada
@@ -34,11 +24,25 @@ inRaster1  = arcpy.GetParameterAsText(0)
 outDatas1  = arcpy.GetParameterAsText(1)
 outSHP1    = arcpy.GetParameterAsText(2) #required = none
 
-
-O CSV
-O csv é um tipo de arquivo muito comum em ciência de dados, para tal o script gera arquivos csv com a finalidade de avaliação dos dados para uma plotagem final
-outDatas1  = arcpy.GetParameterAsText(1) #gera o csv a partir dos dados recuperados por numpy
-
-
-CONSIDERAÇÕES FINAIS
-O script apesar de simples é útil à medida em que automatiza uma tarefa maçante em python.
+Processamento e automação do perfil:
+#extrair a mascara
+out_extract_mask = ExtractByMask(in_raster, in_mask_data)
+#realizar o calculo a partir da mascara
+RM_mde_minus = out_extract_mask * -1
+#hydrology -> flow direction
+FD_mde_minus = arcpy.sa.FlowDirection(RE_mde_minus)
+#hydrology -> sink
+SK_mde_minus = arcpy.sa.Sink("FD_mde_minus")
+#converter raster para pontos
+pnt_mde_min  = arcpy.RasterToPoint_conversion(SK_mde_minus,
+    meu_ambiente+"\\raster-point")
+#tentar extrair valores de pontos do raster
+try:
+    pnt_mde_top1 = arcpy.sa.ExtractValuesToPoints(pnt_mde_min, in_raster,
+        meu_ambiente+"\\pnt_mde_top1",
+        "INTERPOLATE", "VALUE_ONLY")#passível de erro
+except:
+    exit("Erro ao interpolar pontos!!, Verifique os arquivos!!")
+    
+    
+...
