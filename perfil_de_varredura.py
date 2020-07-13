@@ -15,8 +15,8 @@ from arcpy import env
 in_raster     = "" #raster principal
 in_mask_data  = "" #poligono
 
-meu_ambiente  = "C:\\users\\user\\path\\to\\database.gdb"
-env.workspace = meu_ambiente
+my_workspace  = "C:\\users\\user\\path\\to\\database.gdb"
+env.workspace = my_workspace
 if env.workspace:
     print("Ambiente: ", env.workspace)
 else:
@@ -28,11 +28,11 @@ RE_mde_minus = out_extract_mask * -1
 FD_mde_minus = arcpy.sa.FlowDirection(RE_mde_minus)
 SK_mde_minus = arcpy.sa.Sink("FD_mde_minus")
 pnt_mde_min  = arcpy.RasterToPoint_conversion(SK_mde_minus,
-    meu_ambiente+"\\raster-point")
+    my_workspace+"\\raster-point")
 
 try:
     pnt_mde_top1 = arcpy.sa.ExtractValuesToPoints(pnt_mde_min, in_raster,
-        meu_ambiente+"\\pnt_mde_top1",
+        my_workspace+"\\pnt_mde_top1",
         "INTERPOLATE", "VALUE_ONLY")#passível de erro
 except:
     exit("Erro ao interpolar pontos!!, Verifique os arquivos!!")
