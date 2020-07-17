@@ -7,6 +7,8 @@ daniel santos
 A funcionalidade deste script é realizar uma integração com ArcMap(ArgGis) para análises de perfis topográficos a partir de dados georreferenciados.
 O pacote do arcpy integra diversas funcionalidades utilizadas para finalidades diversas.
 
+"Basicamente, todos os modelos estão errados, mas alguns são uteis" - George Box
+
 #importação do módulo arcpy
 import arcpy
 

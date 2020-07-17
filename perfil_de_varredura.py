@@ -15,24 +15,14 @@ from arcpy import env
 in_raster     = "" #raster principal
 in_mask_data  = "" #poligono
 
-my_workspace  = "C:\\users\\user\\path\\to\\database.gdb"
-env.workspace = my_workspace
-if env.workspace:
-    print("Ambiente: ", env.workspace)
-else:
-    print("É importante setar seu ambiente. Exemplo: C:\\users\\user\path\to\ambiente.gdb")
-    exit()
-    
-out_extract_mask = ExtractByMask(in_raster, in_mask_data)
-RE_mde_minus = out_extract_mask * -1
-FD_mde_minus = arcpy.sa.FlowDirection(RE_mde_minus)
-SK_mde_minus = arcpy.sa.Sink("FD_mde_minus")
-pnt_mde_min  = arcpy.RasterToPoint_conversion(SK_mde_minus,
-    my_workspace+"\\raster-point")
-
 try:
-    pnt_mde_top1 = arcpy.sa.ExtractValuesToPoints(pnt_mde_min, in_raster,
-        my_workspace+"\\pnt_mde_top1",
-        "INTERPOLATE", "VALUE_ONLY")#passível de erro
-except:
+    outextract_mask = ExtractByMask(in_raster, in_mask_data)
+    RE_mde_minus = out_extract_mask * -1
+    FD_mde_minus = arcpy.sa.FlowDirection(RE_mde_minus)
+    SK_mde_minus = arcpy.sa.Sink(FD_mde_minus)
+    pnt_mde_min  = arcpy.RasterToPoint_conversion(SK_mde_minus, "pnt_mde_min")
+    pnt_mde_top1 = arcpy.sa.ExtractValuesToPoints(pnt_mde_min, RE_mde_minus, "pnt_mde_top1")#passível de erro
+    pnt_mde_3d   = arcpy.FeatureTo3DByAttribute_3d("pnt_mde_top1", "pnt_mde_3d", "RASTERVALU")
+except arcpy.ExecuteError:
+    print(arcpy.GetMessages())
     exit("Erro ao interpolar pontos!!, Verifique os arquivos!!")
